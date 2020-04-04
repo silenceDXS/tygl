@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加管理员</title>
+</head>
+
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{../bootstrap/css/bootstrap.min.css}">
+<script src="../static/bootstrap/js/jquery.min.js" th:src="@{../bootstrap/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{../bootstrap/js/bootstrap.min.js}"></script>
+<body>
+<div>
+    <div >
+        <div >
+            <ol class="breadcrumb">
+                <li><a href="Index.html">首页</a></li>
+                <li><a href="Index.html" th:href="@{/getAllAdmin(nowPage=1,param=1)}" th:if="${info==null}">管理员管理</a></li>
+
+                <li class="active" th:if="${info==null}">添加管理员</li>
+                <li class="active" th:if="${info!=null}">个人信息</li>
+            </ol>
+        </div><hr>
+    <div style="margin-left: 20px;width: 500px;height: 500px;">
+    <form  id="form1" th:method="${info}!=null?'post':''" th:action="${info}!=null?'/updateAdmin':''">
+        <div class="form-group">
+            <label >账号</label>
+            <input type="" class="form-control"  id="username" placeholder="Username" name="username" onkeyup="this.value=this.value.replace(/[, ]/g,'')" th:if="${info==null}">
+            <h4 th:text="${admin.adminAccount}" th:if="${info!=null}"></h4>
+        </div>
+        <div class="form-group">
+            <label >密码</label>
+            <input type="" class="form-control"  id="password" placeholder= "Password" name="password" onkeyup="this.value=this.value.replace(/[, ]/g,'')" th:if="${info==null}">
+            <input type="" class="form-control"  id="password1" placeholder= "Password" name="password" onkeyup="this.value=this.value.replace(/[, ]/g,'')" th:if="${info!=null}" th:value="${admin.adminPassword}">
+        </div>
+
+        <div class="form-group">
+            <label >真实姓名</label>
+            <input type="" class="form-control" id="name" placeholder="Name" name="name" onkeyup="this.value=this.value.replace(/[, ]/g,'')" th:if="${info==null}">
+            <h4 th:text="${admin.name}" th:if="${info!=null}"></h4>
+        </div>
+
+
+        <button type="button" class="btn btn-default" onclick="submit1();" th:if="${info==null}">添加</button>
+        <button type="submit" class="btn btn-default"  th:if="${info!=null}">修改密码</button>
+
+    </form>
+    </div>
+</div>
+</div>
+</body>
+<script type = "text/javascript" th:inline="javascript">
+    /**
+     *
+     */
+    function submit1() {
+
+        var name = $("#name").val();
+        var password = $("#password").val();
+        var username = $("#username").val();
+        if(name==""||name==null||name==undefined||password==""||password==null||password==undefined||username==""||username==undefined
+        ||username==null){
+            confirm("输入有误");
+            location.reload([false]);
+        }
+
+       else {
+            $.ajax({
+                type: "post",
+                url: "/addAdmin",
+                data: $("#form1").serializeArray(),
+                dataType: "json",
+                // contentType:"application/json; charset=utf-8",
+                contentType: "application/x-www-form-urlencoded",
+                success: function (data) {
+
+                    if (data.mes == "1") {
+                        alert("添加成功")
+                        location.reload([false]);
+                    } else if (data.mes == "0") {
+                        alert("该用户已被注册")
+
+                    } else if (data.mes == "2") {
+                        alert("添加失败")
+                        location.reload([false]);
+                    } else if (data.mes == "3") {
+                        alert("输入有误")
+                    }
+
+                }
+            });
+        }
+        }
+
+
+
+
+
+
+
+</script>
+</html>

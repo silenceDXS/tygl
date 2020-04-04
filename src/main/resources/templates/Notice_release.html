@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>公告发布</title>
+</head>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{../bootstrap/css/bootstrap.min.css}">
+<script src="../static/bootstrap/js/jquery.min.js" th:src="@{../bootstrap/js/jquery.min.js}"></script>
+<script src="../static/js/jquery-form.js" th:src="@{../js/jquery-form.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{../bootstrap/js/bootstrap.min.js}"></script>
+<script src="../static/js/layer.js" th:src="@{../js/layer.js}"></script>
+
+<body>
+
+<div class="row">
+
+    <div class="col-md-8">
+        <div >
+            <ol class="breadcrumb">
+                <li><a href="Index.html">首页</a></li>
+                <li><a href="Notice_index.html" th:href="@{/getAllNotice(nowPage=1,param=1)}">公告详情</a></li>
+                <li class="active">发起公告</li>
+            </ol>
+        </div>
+        <div class="glyphicon glyphicon-plus" style="font-size: 25px;margin-left: 20px;">发起</div><hr>
+        <div style="margin-left: 20px">
+            <form   id="gp" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">标题</label>
+                    <input type="text" class="form-control" id="title" placeholder="问题标题" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="content" name="content">内容</label>
+                    <!--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="参照右侧提示">-->
+                    <textarea class="form-control" rows="3" id="content" placeholder="参照右侧提示" name="content"></textarea>
+                </div>
+                <div class="form-group">
+                    <label >类型</label><br>
+                   <!--<input name="noticeType" th:value="考级" type="radio" required="required" checked="checked">考级-->
+                   <!--<input name="noticeType" th:value="信息" type="radio" required="required">信息-->
+                   <!--<input name="noticeType" th:value="其他" type="radio" required="required">其他-->
+                    <select name="noticeType" >
+
+                        <ul class="dropdown-menu" th:each="type:${type}">
+                            <li><option th:value="${type.id}" th:text="${type.typeName}">1</option></li>
+                            <li role="separator" class="divider"></li>
+
+                        </ul>
+
+
+                    </select>
+
+                </div>
+                <div>
+                    <label for="name">发布人</label>
+                    <input type="text" class="form-control" id="name" placeholder="管理员姓名" name="author">
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label for="pic1" th:text="作者头像" >File input</label>
+                    <input type="file" id="pic1" name="pic" required="required">
+                    <p class="help-block">用做作者头像</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="pic2" th:text="公告背景" >File input</label>
+                    <input type="file" id="pic2" name="pic" required="required">
+                    <p class="help-block">作为公告背景</p>
+                </div>
+                <!--<div class="checkbox">-->
+                    <!--<label>-->
+                        <!--<input type="checkbox"> Check me out-->
+                    <!--</label>-->
+                <!--</div>-->
+                <button type="button" class="btn btn-default" style="display:block;margin:0 auto" id="ok" onclick="submit1();"><b class="glyphicon glyphicon-open">发布</b></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="glyphicon glyphicon-star-empty" style="margin-top: 35px;margin-left: 20px;font-size: 18px;">
+            <strong>问题发起指南</strong>
+
+        </div>
+        <div style="margin-left: 25px;margin-top: 10px;" class="glyphicon glyphicon-stop" > 问题标题：请用精简的语言描述您发布的问题，不超过25字</div>
+        <div style="margin-left: 25px;margin-top: 10px;" class="glyphicon glyphicon-stop"> 问题补充：详细补充您的问题内容，并确保问题描述清晰直观，并提供一些相关资料</div>
+        <div style="margin-left: 25px;margin-top: 10px;" class="glyphicon glyphicon-stop">类型：公告发布的类型 </div>
+        <div style="margin-left: 25px;margin-top: 10px;" class="glyphicon glyphicon-stop">发布人：填写发布管理员姓名 </div>
+    </div>
+</div>
+
+
+
+
+</body>
+<script type = "text/javascript" th:inline="javascript">
+
+
+
+    $("#ok").click(function() {
+        var title=document.getElementById("title").value;
+        var content=document.getElementById("content").value;
+        var name=document.getElementById("name").value;
+        var pic1=document.getElementById("pic1").value;
+        var pic2=document.getElementById("pic2").value;
+        if(title==""){
+            alert("标题不能空");
+            return false;
+        }else if(content==""){
+            alert("内容不能空");
+            return false;
+        }else  if(name==""){
+            alert("管理员姓名不能空");
+            return false;
+        }else  if(pic1==""||pic2==""){
+            alert("图片不能为空");
+            return false;
+        }
+        if(confirm("确定添加？")) {
+            $("#gp").ajaxSubmit({
+                url: "/noticeSub",
+                type: "post",
+                dataType: 'json',
+                success: function (data) {
+
+
+                },
+
+                // error : function(data) {
+                //     alert("error:" + data.responseText);
+                // }
+            });
+        }
+
+        location.reload([false]);
+    });
+
+
+
+</script>
+</html>

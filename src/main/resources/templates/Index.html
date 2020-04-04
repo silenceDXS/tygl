@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>管理员主页</title>
+</head>
+<!--<link type="text/css" rel="stylesheet" href="../static/css/backgroup.css" th:href="@{css/backgroup.css}">-->
+<link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}">
+<script src="../static/bootstrap/js/jquery.min.js" th:src="@{/bootstrap/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">we天院</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="Notice_index.html" th:href="@{/getAllNotice(nowPage=1,param=1)}">公告管理</a></li>
+                <li><a href="Circle.html" th:href="@{getAllCircle(nowPage=1,param=1)}">圈子管理</a></li>
+                <li><a href="User.html" th:href="@{/getAllUser(nowPage=1,param=1)}">用户管理</a></li>
+                <li><a href="Admin.html" th:href="@{/getAllAdmin(nowPage=1,param=1)}">管理员管理</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" style="margin-left: 110px;" method="get" th:action="@{/findNotice}">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索公告(标题)" id="input1" name="param" onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')" required="required">
+                    <input type="hidden" name="type" value="2">
+                    <input type="hidden" name="nowPage" value="1">
+                </div>
+                <button type="submit" class="btn btn-default" title="按标题" >搜索</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="Plan.html" th:href="@{/getAllPlan(nowPage=1,param=1)}">上传轮播图</a></li>
+                <li><a href="Notice_release.html" th:href="@{/getType}">发布公告</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">我 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" th:href="@{/getAdminInfo}">个人信息</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" th:href="@{/changeUser}">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+    <div class="row" >
+        <div class="" style="border: 0px solid red;width: 100%;height: 650px;">
+            <img src="../static/images/zhang.jpg" th:width="1550px" th:height="650px" th:src="''+@{images/zhang.jpg}+''">
+        </div>
+    </div>
+</body>
+<script type = "text/javascript" th:inline="javascript">
+    function submit1(){
+        //搜索
+        //搜索
+        var inputdata=$('#input1').val();
+        if(inputdata!=""&&inputdata!=undefined&&inputdata!=null) {
+            var url = "/findNotice?param=" + $('#input1').val()+"&nowPage="+"1"+"&type="+"0";
+            $('#pageNotice').load(url);
+
+        }else {
+
+            if (confirm("输入有误"))
+            {
+                location.reload([false]) ;
+                return true;
+            }else {
+                location.reload([false]) ;
+                return false;
+            }
+
+
+        }
+
+    }
+</script>
+</html>

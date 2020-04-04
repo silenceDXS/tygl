@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/a_water?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SEKECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnRetun: false
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connection-properties: druid.stat.mergeSql=true;druid.sttat.slowSqlMinllis=500
+mybatis:
+  config-location: classpath:mybatis_config.xml
+  mapper-locations: classpath:mybatis/*.xml
+  type-aliases-package: com.thxy.tygl.entity
+
+
+

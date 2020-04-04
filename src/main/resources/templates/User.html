@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/User.css" th:href="@{../css/User.css}">
+    <link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{../bootstrap/css/bootstrap.min.css}">
+    <script src="../static/bootstrap/js/jquery.min.js" th:src="@{../bootstrap/js/jquery.min.js}"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{../bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div>
+    <div >
+        <ol class="breadcrumb">
+            <li><a href="Index.html">首页</a></li>
+
+            <li class="active">用户管理</li>
+        </ol>
+    </div><hr>
+    <div>
+        <h4 style="text-align: center;">用户信息表</h4>
+
+    </div><hr>
+    <div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="input1" placeholder="Search for..." >
+                    <span class="input-group-btn">
+        <button class="btn btn-default" type="button"  data-toggle="tooltip" data-placement="bottom" title="按学号" onclick="submit()">学号搜索</button>
+      </span>
+                </div><!-- /input-group -->
+
+            <div class="col-md-4"></div>
+        </div>
+
+        </div>
+
+    </div><hr>
+
+
+        <div th:fragment="pageUser" id="pageUser">
+                <div style="width: 1000px;height: 500px;border: 0px solid red;margin-left: 300px;">
+
+                    <div style="border:0px solid red;width: 1000px;height: 340px;" >
+
+                            <table class="table table-bordered" style="margin-top: 20px;text-align: center" >
+                                <p th:if="${mes}!=null" th:text="${mes}"></p>
+                                <tr>
+                                    <th style="text-align: center;background-color: cornsilk;">用户id</th>
+                                    <th style="text-align: center;background-color: cornsilk;">学号</th>
+                                    <th style="text-align: center;background-color: cornsilk;">姓名</th>
+                                    <th style="text-align: center;background-color: cornsilk;">性别</th>
+                                    <th style="text-align: center;background-color: cornsilk;">学院</th>
+                                    <th style="text-align: center;background-color: cornsilk;">班级</th>
+                                    <th style="text-align: center;background-color: cornsilk;">微信名</th>
+                                    <th style="text-align: center;background-color: cornsilk;">操作</th>
+                                </tr>
+
+                                <tr style="text-align: center;" th:each="user:${user}" >
+                                    <td th:text="${user.userId}" >1</td>
+                                    <td th:text="${user.studentId}" id="studentId">12345678912345</td>
+                                    <td th:text="${user.name}">邓</td>
+                                    <td th:text="${user.sex}">男</td>
+                                    <td th:text="${user.wecharName}">计算机科学与工程学院</td>
+                                    <td th:text="${user.grade}">软工4版</td>
+                                    <td th:text="${user.college}">泷苏</td>
+                                    <td ><!-- Indicates caution should be taken with this action -->
+                                        <button type="button" class="btn btn-warning" th:onclick="del([[${user.studentId}]],[[${pageResult.nowPage}]]);"><text class="glyphicon glyphicon-remove">删除</text></button></td>
+
+
+
+                                </tr>
+
+
+
+                            </table>
+
+                    </div>
+                    <div style="border:0px solid red;width: 1000px;height: 1px;background-color: #eeeeee">
+
+                    </div>
+
+                    <div >
+                        <div class="div2" >
+                            <div class="div3" >
+                                <div style="margin-left: 0px;"  >
+                                    <div class="btn-group"  role="group" aria-label="..." th:object="${pageResult}" >
+                                        <button type="button" class="btn btn-default" th:disabled="*{(nowPage!=1)?'false':'disabled'}" th:if="*{findParam==1}" th:onclick="submit2([[*{nowPage}-1]])" ><text class="glyphicon glyphicon-chevron-left" ></text> </button>
+                                        <button type="button" class="btn btn-default" th:disabled="*{(nowPage!=1)?'false':'disabled'}" th:if="*{findParam==2}"  th:onclick="submit1([[*{nowPage}-1]]);"><text class="glyphicon glyphicon-chevron-left" ></text></button>
+
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==(totalPage-1)&&totalPage>4&&findParam==1}" th:text="*{nowPage-3}" th:onclick="submit2([[*{nowPage}-3]])" ></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==(totalPage-1)&&totalPage>4&&findParam==2}" th:text="*{nowPage-3}" th:onclick="submit1([[*{nowPage}-3]]);"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>4&&findParam==1}" th:text="*{nowPage-4}" th:onclick="submit2([[*{nowPage}-4]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>4&&findParam==2}" th:text="*{nowPage-4}" th:onclick="submit1([[*{nowPage}-2]]);"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>=4&&findParam==1}" th:text="*{nowPage-3}" th:onclick="submit2([[*{nowPage}-3]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>=4&&findParam==2}" th:text="*{nowPage-3}" th:onclick="submit1([[*{nowPage}-3]]);"></button>
+
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage>2&&findParam==1}" th:text="*{nowPage-2}" th:onclick="submit2([[*{nowPage}-2]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage>2&&findParam==2}" th:text="*{nowPage-2}" th:onclick="submit1([[*{nowPage}-2]]);"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage>1&&findParam==1}" th:text="*{nowPage-1}" th:onclick="submit2([[*{nowPage}-1]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage>1&&findParam==2}" th:text="*{nowPage-1}" th:onclick="submit1([[*{nowPage}-1]]);"></button>
+                                        <button type="button" class="btn btn-success" th:href="@{/getAllNotice(*{nowPage})}" th:text="*{nowPage}">1</button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&findParam==1}" th:text="*{nowPage+1}" th:onclick="submit2([[*{nowPage}+1]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&findParam==2}" th:text="*{nowPage+1}" th:onclick="submit1([[*{nowPage}+1]]);"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&nowPage!=totalPage-1&&findParam==1}" th:text="*{nowPage+2}"  th:onclick="submit2([[*{nowPage}+2]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&nowPage!=totalPage-1&&findParam==2}" th:text="*{nowPage+2}"  th:onclick="submit1([[*{nowPage}+2]]);"></button>
+
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>=4&&findParam==1}" th:text="*{nowPage+3}" th:onclick="submit2([[*{nowPage}+3]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>=4&&findParam==2}" th:text="*{nowPage+3}" th:onclick="submit1([[*{nowPage}+3]]);"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>4&&findParam==1}" th:text="*{nowPage+4}" th:onclick="submit2([[*{nowPage}+4]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>4&&findParam==2}" th:text="*{nowPage+4}" th:onclick="submit1([[*{nowPage}+4]]);"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==2&&totalPage>4&&findParam==1}" th:text="*{nowPage+3}" th:onclick="submit2([[*{nowPage}+3]])"></button>
+                                        <button type="button" class="btn btn-default" th:if="*{nowPage==2&&totalPage>4&&findParam==2}" th:text="*{nowPage+3}" th:onclick="submit1([[*{nowPage}+3]]);"></button>
+
+                                        <button type="button" class="btn btn-default" th:disabled="*{nowPage!=totalPage}?'false':'disabled'" th:if="*{findParam==1}" th:onclick="submit2([[*{nowPage}+1]])"><text class="glyphicon glyphicon-chevron-right" ></text></button>
+                                        <button type="button" class="btn btn-default" th:disabled="*{nowPage!=totalPage}?'false':'disabled'" th:if="*{findParam==2}" th:onclick="submit1([[*{nowPage}+1]]);"><text class="glyphicon glyphicon-chevron-right" ></text></button>
+
+                                        <button type="button" class="btn btn-default" style="text-align: center;">共<span th:text="*{totalPage}"></span>页</button>
+                                        <button type="button" class="btn btn-default" style="text-align: center;">共<span th:text="*{totalCount}"></span>条</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+            </div>
+        </div>
+
+</div>
+
+</body>
+
+<script type = "text/javascript" th:inline="javascript">
+    function submit(){
+        //搜索
+
+        var inputdata=$('#input1').val();
+        if(inputdata!=""&&inputdata!=undefined&&inputdata!=null) {
+            var url = "/findUser?param=" + $('#input1').val()+"&nowPage="+"1";
+            $('#pageUser').load(url);
+
+        }else {
+
+            if (confirm("输入有误"))
+            {
+                location.reload([false]) ;
+                return true;
+            }else {
+                location.reload([false]) ;
+                return false;
+            }
+
+
+        }
+
+    }
+    //阻止搜索框输入非数字
+    $('#input1').bind('input propertychange', function() {
+        console.log($(this).val());
+        $(this)[0].value = $(this).val().replace(/[^0-9]/g,'')
+    });
+    function submit1(nowPage){
+        //搜索
+
+        var inputdata=$('#input1').val();
+        if(inputdata!=""&&inputdata!=undefined&&inputdata!=null) {
+            var url = "/findUser?param=" + $('#input1').val()+"&nowPage="+nowPage;
+            $('#pageUser').load(url);
+
+        }else {
+
+            if (confirm("输入有误"))
+            {
+                location.reload([false]) ;
+                return true;
+            }else {
+                location.reload([false]) ;
+                return false;
+            }
+
+
+        }
+
+    }
+    //页面分页
+    function submit2(nowPage){
+
+
+        var url = "/getAllUser?nowPage=" +nowPage+"&param="+"0";
+
+        $('#pageUser').load(url);
+
+
+
+    }
+
+
+
+
+    function del(stuentId,nowPage)
+    {
+        if(confirm("确定要删除吗？"))
+        {
+
+                var url = "/delUser?param=" + stuentId+"&nowPage="+nowPage;
+                $('#pageUser').load(url);
+
+
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+
+
+
+</script>
+</html>

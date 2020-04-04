@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.thxy.tygl.mapper.AdminMapper">
+    <!--根据客户编码获取客户信息
+    id:select元素在映射文件中的唯一标识
+    parameterType:传入参数的类型
+    resultType:返回结果的类型
+-->
+    <select id="checkAdmin"  parameterType="String" resultType="com.thxy.tygl.entity.Admin">
+        select * from admin where admin_account=#{username} and admin_password=#{password}
+    </select>
+
+    <select id="getAllAdminForPage"  parameterType="int" resultType="com.thxy.tygl.entity.Admin">
+        select * from admin order by last_time desc   limit #{currPage},#{pageSize}
+    </select>
+
+    <select id="getCountAdmin" resultType="int">
+        select count(2) from admin
+    </select>
+
+    <select id="findAdminByName" parameterType="Map" resultType="com.thxy.tygl.entity.Admin">
+        select * from admin where name like concat(#{param.name},'%')  limit #{param.currPage},#{param.pageSize}
+
+
+
+    </select>
+
+    <select id="countFindAdmin" parameterType="String" resultType="int">
+        select count(1) from  admin where name=#{name}
+
+
+    </select>
+
+    <insert id="addAdmin" parameterType="com.thxy.tygl.entity.Admin" >
+        insert into admin(name,admin_account,admin_password,last_time) values (#{name},#{adminAccount},#{adminPassword},#{lastTime})
+    </insert>
+
+    <select id="checkAdminByName" parameterType="String" resultType="com.thxy.tygl.entity.Admin">
+        select * from admin where admin_account=#{username}
+    </select>
+
+    <update id="updateLoginTime" parameterType="String" >
+        update admin set last_time=#{time} where admin_account=#{username}
+    </update>
+    <update id="updateAdmin" parameterType="com.thxy.tygl.entity.Admin">
+        update  admin set admin_password=#{adminPassword} where admin_id=#{adminId}
+</update>
+
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.thxy.tygl.mapper.NoticeMapper">
+    <!--根据客户编码获取客户信息
+    id:select元素在映射文件中的唯一标识
+    parameterType:传入参数的类型
+    resultType:返回结果的类型
+-->
+    <resultMap id="noticeMap" type="com.thxy.tygl.entity.Notice">
+        <id property="noticeId" column="notice_id"></id>
+        <result property="title" column="title"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="noticeType" column="notice_type"></result>
+        <result property="active" column="active"></result>
+        <result property="content" column="content"></result>
+        <result property="author" column="author"></result>
+        <result property="coverUrl" column="cover_url"></result>
+        <result property="authorUrl" column="author_url"></result>
+        <association property="type" javaType="com.thxy.tygl.entity.Type" >
+            <id property="id" column="notice_type"></id>
+            <result property="typeName" column="type_name"></result>
+        </association>
+    </resultMap>
+    <select id="getAllNoticeForPage"  parameterType="int" resultMap="noticeMap">
+        select n.notice_id,n.title,n.create_time,n.notice_type,n.active,n.content,n.author,
+                n.cover_url,n.author_url,t.id,t.type_name
+        from notice n,type t
+
+        where active=1 and n.notice_type=t.id order by create_time desc limit #{currPage},#{pageSize}
+    </select>
+
+    <select id="getCountNotice" resultType="int">
+        select count(2) from notice where active=1
+    </select>
+
+    <select id="findNoticeByTitle" parameterType="Map" resultMap="noticeMap">
+        select n.notice_id,n.title,n.create_time,n.notice_type,n.active,n.content,n.author,
+                n.cover_url,n.author_url,t.id,t.type_name
+        from notice n,type t
+        where n.title like  concat('%',#{param.title},'%') and active=1 and n.notice_type=t.id
+
+        limit #{param.currPage},#{param.pageSize}
+
+
+
+    </select>
+
+    <select id="countFindNotice" parameterType="String" resultType="int">
+        select count(1) from  notice where title like  concat('%',#{title},'%') and active=1
+
+
+    </select>
+
+    <update id="delNoticeById" parameterType="int">
+        update  notice set active=0 where notice_id=#{noticeId}
+    </update>
+
+    <insert id="insertNotice" parameterType="com.thxy.tygl.entity.Notice" >
+        insert into notice(title,create_time,notice_type,active,content,author,author_url,cover_url) values (#{title},#{createTime},#{noticeType},#{active},#{content},#{author},#{coverUrl},#{authorUrl})
+    </insert>
+
+    <select id="findNoticeById" parameterType="int" resultType="com.thxy.tygl.entity.Notice">
+        select * from notice where notice_id=#{noticeId}
+    </select>
+    <select id="getType" resultType="com.thxy.tygl.entity.Type">
+
+        select * from  type
+    </select>
+</mapper>

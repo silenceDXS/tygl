@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.thxy.tygl.mapper.CircleMapper">
+    <!--根据客户编码获取客户信息
+    id:select元素在映射文件中的唯一标识
+    parameterType:传入参数的类型
+    resultType:返回结果的类型
+-->
+    <select id="getAllCircleForPage"  parameterType="int" resultType="com.thxy.tygl.entity.Circle">
+        select * from circle where active=1 order by create_time desc   limit #{currPage},#{pageSize}
+    </select>
+
+    <select id="getCountCircle" resultType="int">
+        select count(2) from circle
+    </select>
+
+    <select id="findCircleByName" parameterType="Map" resultType="com.thxy.tygl.entity.Circle">
+        select * from circle where creator_id=#{param.studentId}  limit #{param.currPage},#{param.pageSize}
+
+
+
+    </select>
+
+    <select id="countFindCircle" parameterType="int" resultType="int">
+        select count(1) from  circle where creator_id=#{studentId}
+
+
+    </select>
+
+    <update id="delCircleByStudentId" parameterType="int">
+        update  circle set active=0 where creator_id=#{studentId}
+    </update>
+    <select id="findCircleByCircleId" parameterType="int" resultType="com.thxy.tygl.entity.Circle">
+        select * from circle where  circle_id=#{circleId} and active=1
+    </select>
+</mapper>

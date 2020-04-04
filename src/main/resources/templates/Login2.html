@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link type="text/css" rel="stylesheet" href="../static/css/login.css" th:href="@{css/login.css}">
+    <link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{bootstrap/css/bootstrap.min.css}">
+    <script src="../static/bootstrap/js/jquery.min.js" th:src="@{bootstrap/js/jquery.min.js}"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body>
+    <div class="div1">
+        <div class="glyphicon glyphicon-star-empty">
+            <div style="margin-left: 180px;" ><h2 th:text="#{login.tip}">登录界面</h2></div>
+            <p  th:text="${mes}" th:if="${not #strings.isEmpty(mes)}" style="color: #2aabd2"></p>
+
+
+        </div>
+
+
+
+    </div><hr/>
+
+    <div class="div2">
+        <form method="post" action="Index.html" th:action="@{/login}">
+            <div class="form-group">
+                <label for="exampleInputEmail1" th:text="#{login.username}">Username</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="用户名" name="username">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1" th:text="#{login.password}">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="密码" name="password">
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="exampleInputFile">File input</label>-->
+                <!--<input type="file" id="exampleInputFile">-->
+                <!--<p class="help-block">Example block-level help text here.</p>-->
+            <!--</div>-->
+            <div class="checkbox">
+                <label >
+                    <input type="checkbox"th:text="#{login.remember}" name="remember">
+                </label>
+                <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="该功能尚未开发" th:text="#{login.register}">
+                    <a>注册</a>
+                </button>
+
+
+            </div>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-default" style=""><p th:text="#{login.bnt}">登录</p></button>
+            </div><hr>
+            <div class="row" style="margin-top: 100px;">
+                <div class="col-md-6" style="text-align: right;"><a th:href="@{/login(l='zh_CN')}">Chinese</a></div>
+                <div class="col-md-6"><a th:href="@{/login(l='en_US')}">English</a></div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

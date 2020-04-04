@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图</title>
+</head>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{../bootstrap/css/bootstrap.min.css}">
+<script src="../static/bootstrap/js/jquery.min.js" th:src="@{../bootstrap/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{../bootstrap/js/bootstrap.min.js}"></script>
+
+<body>
+<div style="background-color:#DDDDDD;width: 100%;height: 710px;">
+    <div >
+        <ol class="breadcrumb">
+            <li><a href="Index.html">首页</a></li>
+            <li class="active">轮播图</li>
+        </ol>
+    </div>
+    <div class="row">
+
+        <div class="col-lg-8" style="text-align: center"><h2 >轮播图信息表</h2></div>
+        <div class="col-md-4">
+            <div class="glyphicon glyphicon-pencil" style="font-size: 25px;margin-left: 150px;margin-top: 20px;">上传轮播图</div>
+        </div>
+    </div><hr>
+    <div class="row">
+        <div class="col-md-8" >
+            <div style="width: 200px;height: 100%;text-align: center;margin-left: 400px;">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..." id="input1" onkeyup="this.value=this.value.replace(/^\s+|\s+$/g,'')">
+                    <span class="input-group-btn">
+        <button class="btn btn-default" type="button"  data-toggle="tooltip" data-placement="bottom" title="按关键字" onclick="submit();">搜轮播图</button>
+      </span>
+                </div>
+
+            </div>
+            <div th:fragment="pagePlan" id="pagePlan">
+            <div style="height: 500px;width: 600px;border: 0px solid red;margin-left: 220px;" >
+                <div style="width: 100%;height: 300px;border: 0px solid red;padding: 0 auto;">
+                    <table class="table table-bordered" style="margin-top: 20px;">
+                        <tr>
+                            <th style="text-align: center;background-color: cornsilk;">轮播图id</th>
+                            <th style="text-align: center;background-color: cornsilk;">轮播图地址</th>
+                            <th style="text-align: center;background-color: cornsilk;">操作</th>
+
+                        </tr>
+I
+                        <tr style="text-align: center;background-color: #eeeeee" th:each="plan:${plan}">
+                            <td th:text="${plan.id}">1</td>
+                            <td> <a th:href="@{${plan.planImg}}"><img  th:width="50px" th:height="50px" th:src="@{${plan.planImg}}" ></a></td>
+                            <td ><!-- Indicates caution should be taken with this action -->
+                                <button type="button" class="btn btn-warning" data-toggle="tooltip" data-placement="bottom"  th:onclick="del([[${plan.id}]],[[${pageResult.nowPage}]]);"><text class="glyphicon glyphicon-remove">删除</text></button></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div style="border:0px solid red;width: 100%;height: 1px;background-color: #eeeeee;">
+
+                </div>
+                <div style="margin-left:136px;margin-top: 120px;">
+                    <div class="btn-group"  role="group" aria-label="..." th:object="${pageResult}" >
+                        <button type="button" class="btn btn-default" th:disabled="*{(nowPage!=1)?'false':'disabled'}" th:if="*{findParam==1}" th:onclick="submit2([[*{nowPage}-1]])" ><text class="glyphicon glyphicon-chevron-left" ></text> </button>
+                        <button type="button" class="btn btn-default" th:disabled="*{(nowPage!=1)?'false':'disabled'}" th:if="*{findParam==2}"  th:onclick="submit1([[*{nowPage}-1]]);"><text class="glyphicon glyphicon-chevron-left" ></text></button>
+
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==(totalPage-1)&&totalPage>4&&findParam==1}" th:text="*{nowPage-3}" th:onclick="submit2([[*{nowPage}-3]])" ></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==(totalPage-1)&&totalPage>4&&findParam==2}" th:text="*{nowPage-3}" th:onclick="submit1([[*{nowPage}-3]]);"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>4&&findParam==1}" th:text="*{nowPage-4}" th:onclick="submit2([[*{nowPage}-4]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>4&&findParam==2}" th:text="*{nowPage-4}" th:onclick="submit1([[*{nowPage}-2]]);"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>=4&&findParam==1}" th:text="*{nowPage-3}" th:onclick="submit2([[*{nowPage}-3]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==totalPage&&totalPage>=4&&findParam==2}" th:text="*{nowPage-3}" th:onclick="submit1([[*{nowPage}-3]]);"></button>
+
+                        <button type="button" class="btn btn-default" th:if="*{nowPage>2&&findParam==1}" th:text="*{nowPage-2}" th:onclick="submit2([[*{nowPage}-2]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage>2&&findParam==2}" th:text="*{nowPage-2}" th:onclick="submit1([[*{nowPage}-2]]);"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage>1&&findParam==1}" th:text="*{nowPage-1}" th:onclick="submit2([[*{nowPage}-1]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage>1&&findParam==2}" th:text="*{nowPage-1}" th:onclick="submit1([[*{nowPage}-1]]);"></button>
+                        <button type="button" class="btn btn-success" th:href="@{/getAllNotice(*{nowPage})}" th:text="*{nowPage}">1</button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&findParam==1}" th:text="*{nowPage+1}" th:onclick="submit2([[*{nowPage}+1]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&findParam==2}" th:text="*{nowPage+1}" th:onclick="submit1([[*{nowPage}+1]]);"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&nowPage!=totalPage-1&&findParam==1}" th:text="*{nowPage+2}"  th:onclick="submit2([[*{nowPage}+2]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage!=totalPage&&nowPage!=totalPage+1&&nowPage!=totalPage-1&&findParam==2}" th:text="*{nowPage+2}"  th:onclick="submit1([[*{nowPage}+2]]);"></button>
+
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>=4&&findParam==1}" th:text="*{nowPage+3}" th:onclick="submit2([[*{nowPage}+3]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>=4&&findParam==2}" th:text="*{nowPage+3}" th:onclick="submit1([[*{nowPage}+3]]);"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>4&&findParam==1}" th:text="*{nowPage+4}" th:onclick="submit2([[*{nowPage}+4]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==1&&totalPage>4&&findParam==2}" th:text="*{nowPage+4}" th:onclick="submit1([[*{nowPage}+4]]);"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==2&&totalPage>4&&findParam==1}" th:text="*{nowPage+3}" th:onclick="submit2([[*{nowPage}+3]])"></button>
+                        <button type="button" class="btn btn-default" th:if="*{nowPage==2&&totalPage>4&&findParam==2}" th:text="*{nowPage+3}" th:onclick="submit1([[*{nowPage}+3]]);"></button>
+
+                        <button type="button" class="btn btn-default" th:disabled="*{nowPage!=totalPage}?'false':'disabled'" th:if="*{findParam==1}" th:onclick="submit2([[*{nowPage}+1]])"><text class="glyphicon glyphicon-chevron-right" ></text></button>
+                        <button type="button" class="btn btn-default" th:disabled="*{nowPage!=totalPage}?'false':'disabled'" th:if="*{findParam==2}" th:onclick="submit1([[*{nowPage}+1]]);"><text class="glyphicon glyphicon-chevron-right" ></text></button>
+
+                        <button type="button" class="btn btn-default" style="text-align: center;">共<span th:text="*{totalPage}"></span>页</button>
+                        <button type="button" class="btn btn-default" style="text-align: center;">共<span th:text="*{totalCount}"></span>条</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+
+
+            <div style="margin-left: 175px" >
+                <form    id="form1" method="post" enctype="multipart/form-data" th:action="@{/addPlan}">
+
+
+                    <div class="form-group" style="margin-top: 10px;" >
+                        <label for="exampleInputFile" th:text="轮播图" >File input</label>
+                        <input type="file" id="exampleInputFile" name="pic" required="required">
+                        <p class="help-block"></p>
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-default" style="display:block;" value="Submit"><b class="glyphicon glyphicon-open">上传</b></button>
+                    <p th:text="${mes}==1?'上传图片成功':''"th:class="${mes}==1?'glyphicon glyphicon-ok':''" style="margin-left: 20px;margin-top: 20px;font-size: 30px;"></p>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</body>
+<script type = "text/javascript" th:inline="javascript">
+
+    function submit(){
+        //搜索
+
+        var inputdata=$('#input1').val();
+        if(inputdata!=""&&inputdata!=undefined&&inputdata!=null) {
+            var url = "/findPlan?param=" + $('#input1').val()+"&nowPage="+"1";
+            $('#pagePlan').load(url);
+
+        }else {
+
+            if (confirm("输入有误"))
+            {
+                location.reload([false]) ;
+                return true;
+            }else {
+                location.reload([false]) ;
+                return false;
+            }
+
+
+        }
+
+    }
+
+    function submit1(nowPage){
+        //搜索
+
+        var inputdata=$('#input1').val();
+        if(inputdata!=""&&inputdata!=undefined&&inputdata!=null) {
+            var url = "/findPlan?param=" + $('#input1').val()+"&nowPage="+nowPage;
+            $('#pagePlan').load(url);
+
+        }else {
+
+            if (confirm("输入有误"))
+            {
+                location.reload([false]) ;
+                return true;
+            }else {
+                location.reload([false]) ;
+                return false;
+            }
+
+
+        }
+
+    }
+    //页面分页
+    function submit2(nowPage){
+
+
+        var url = "/getAllPlan?nowPage=" +nowPage+"&param="+"0";
+
+        $('#pagePlan').load(url);
+
+
+
+    }
+
+
+    function del(planId,nowPage)
+        {
+            if(confirm("确定要删除吗？"))
+            {
+
+                var url = "/delPlan?param=" + planId+"&nowPage="+nowPage;
+                $('#pagePlan').load(url);
+
+
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+</script>
+</html>

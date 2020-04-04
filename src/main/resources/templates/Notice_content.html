@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>公告详情</title>
+</head>
+<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link type="text/css" rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css" th:href="@{../bootstrap/css/bootstrap.min.css}">
+<script src="../static/bootstrap/js/jquery.min.js" th:src="@{../bootstrap/js/jquery.min.js}"></script>
+<script src="../static/bootstrap/js/bootstrap.min.js" th:src="@{../bootstrap/js/bootstrap.min.js}"></script>
+    <div>
+        <div >
+            <ol class="breadcrumb">
+                <li><a href="Index.html" th:href="@{Index.html}" >首页</a></li>
+                <li th:if="${param1}==1"><a href="Notice_index.html" th:href="@{/getAllNotice(nowPage=1,param=1)}" >公告管理</a></li>
+                <li th:if="${param1}!=1"><a href="Circle.html." th:href="@{/getAllCircle(nowPage=1,param=1)}" >圈子管理</a></li>
+
+                <li class="active">公告详情</li>
+            </ol>
+        </div>
+        <div class="jumbotron" style="text-align: center;">
+            <div style="border: 0px solid red;width: 450px;height:auto;margin: 0 auto;">
+                <h3 th:text="${param1}==1?${notice.title}:${circle.content}">白衣天使的一日三餐吃什么？</h3>
+                <p th:text="${param1}==1?${notice.content}:${circle.content}">&emsp;&emsp; 2月24日傍晚，《人民画报》记者走进北大医疗队的驻地，一起来看看医护人员的晚餐都有什么？北大医疗队共有135人，由30名医生和105名护士（包括感控护士和医疗辅助人员）组成。为了更高效工作，医疗队队员们工作期间保持不吃饭、不喝水、不上洗手间。因为要穿防护服等原因，很多队员在上班前2小时就不喝水了。下班到宾馆后队员们会大量吃饭喝水，因为睡眠时间颠倒，很多队员要吃强力的催眠药才能入睡。摄影 马耕平/人民画报 </p>
+                <!--<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>-->
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

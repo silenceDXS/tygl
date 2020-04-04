@@ -1,0 +1,28 @@
+.div2{
+    border: 0px solid red;
+    width:600px;
+    height:50px;
+    margin-left: 400px;
+
+
+
+}
+.div3{
+    /*margin: 0 auto;*/
+    border: 0px solid blue;
+    width:400px;
+    height: 40px;
+    text-align: center;
+    margin-top: 5px;
+    margin-left: 120px;
+}
+
+.div1{
+    border: 0px solid red;
+    width:1200px;
+    height:300px;
+    margin-left: 150px;
+
+
+
+}

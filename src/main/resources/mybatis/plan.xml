@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace:填写映射当前的Mapper接口，所有的增删改查的参数和返回值类型，
+		就可以直接填写缩写，不区分大小写，直接通过方法名去找类型-->
+<mapper namespace="com.thxy.tygl.mapper.PlanMapper">
+    <!--根据客户编码获取客户信息
+    id:select元素在映射文件中的唯一标识
+    parameterType:传入参数的类型
+    resultType:返回结果的类型
+-->
+    <select id="getAllPlanForPage"  parameterType="int" resultType="com.thxy.tygl.entity.Plan">
+        select * from plan where active=1 order by id desc  limit #{currPage},#{pageSize}
+    </select>
+
+    <select id="getCountPlan" resultType="int">
+        select count(2) from plan where active=1
+    </select>
+  <insert id="addPlan" parameterType="Map" >
+      insert into plan(plan_img,active) values (#{map.pic},#{map.active})
+  </insert>
+
+    <select id="findPlanByDate" parameterType="Map" resultType="com.thxy.tygl.entity.Plan">
+        select * from plan where plan_img like  concat('%',#{param.date},'%') and active=1  limit #{param.currPage},#{param.pageSize}
+
+
+
+    </select>
+
+    <select id="countFindPlan" parameterType="String" resultType="int">
+        select count(1) from  plan where plan_img like  concat('%',#{date},'%') and active=1
+
+
+    </select>
+
+    <update id="delPlanById" parameterType="int">
+        update  plan set active=0 where id=#{planId}
+    </update>
+</mapper>
